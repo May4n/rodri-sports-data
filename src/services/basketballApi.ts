@@ -12,7 +12,8 @@ points : {
 }
 
 export async function fetchNBAStandings(season: string): Promise<NBATeamStanding[]> {
-  const url = `/api-basketball/standings?league=12&season=${season}`
+  const basketballBase = import.meta.env.VITE_BASKETBALL_API_BASE_URL ?? '/api-basketball'
+  const url = `${basketballBase}/standings?league=12&season=${season}`
   console.log('Fetching players:', url)
   const res = await fetch(url)
   const json = await res.json()
