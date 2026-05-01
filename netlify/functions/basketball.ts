@@ -1,26 +1,38 @@
 import type { Handler } from '@netlify/functions'
 
 const handler: Handler = async (event) => {
-  const params = event.queryStringParameters ?? {}
-  
-  // Monta a query string com todos os parâmetros recebidos
-  const query = new URLSearchParams(params as Record<string, string>).toString()
-  const url = `https://v1.basketball.api-sports.io/standings?${query}`
+  try {
+    const params = event.queryStringParameters ?? {}
+    console.log('Params recebidos:', JSON.stringify(params))
+    
+    const query = new URLSearchParams(params as Record<string, string>).toString()
+    const url = `https://v1.basketball.api-sports.io/standings?${query}`
+    console.log('URL chamada:', url)
+    
+    const apiKey = process.env.VITE_API_FOOTBALL_KEY
+    console.log('API Key presente:', !!apiKey)
 
-  console.log('URL chamada:', url)
+    const res = await fetch(url, {
+      headers: {
+        'x-apisports-key': apiKey ?? '',
+        'x-rapidapi-host': 'v1.basketball.api-sports.io',
+      },
+    })
 
-  const res = await fetch(url, {
-    headers: {
-      'x-apisports-key': process.env.VITE_API_FOOTBALL_KEY ?? '',
-    },
-  })
+    console.log('Status resposta:', res.status)
+    const data = await res.json()
 
-  const data = await res.json()
-
-  return {
-    statusCode: 200,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }
+  } catch (err) {
+    console.log('Erro detalhado:', String(err))
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: String(err) }),
+    }
   }
 }
 
