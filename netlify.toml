@@ -1,0 +1,25 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[dev]
+  command = "npm run dev"
+  port = 5173
+
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Impede que seu site seja carregado dentro de iframes de outros domínios
+    X-Frame-Options = "DENY"
+    # Ativa proteção contra XSS nos browsers mais antigos
+    X-XSS-Protection = "1; mode=block"
+    # Impede que o browser "adivinhe" o tipo de arquivo (evita ataques via upload)
+    X-Content-Type-Options = "nosniff"
