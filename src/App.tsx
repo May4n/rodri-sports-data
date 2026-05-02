@@ -27,10 +27,9 @@ function App() {
         <div className="blob blob-2" />
         <div className="blob blob-3" />
       </div>
-
-      <div className="max-w-5x1 mx-auto flex flex-col gap-6 relative" style={{ zIndex: 2 }}>
+      <div className="max-w-7xl mx-auto flex flex-col gap-y-10 relative" style={{ zIndex: 2 }}>
         {/*TÍTULO PRINCIPAL*/}
-        <div className="max-w-5x1 mx-auto flex flex-col gap-7">
+        <div className="max-w-7xl mx-auto flex flex-col gap-7">
           <div
             style={{
               position: "relative",
@@ -63,7 +62,7 @@ function App() {
               Data
             </span>
 
-            {/*"ESPORTIVO" COM EB GARAMOND ITÁLICO E DEGRADÊ*/}
+            {/*"ESPORTIVO"*/}
             <span
               style={{
                 display: "block",
@@ -144,8 +143,25 @@ function App() {
         </div>
         {/*SELETOR DE TEMPORADA*/}
         <div className="flex flex-col items-center gap-1">
-          <div className="flex items-center gap-4">
             <span className="text-lg text-muted">Temporada</span>
+            {/* FUTEBOL: select interativo | BASQUETE: botão estático */}
+            {sport === "basketball" ?(
+
+            <div
+              style={{
+                background: "#4A148C",
+                border: "1px solid #6d28d9",
+                borderRadius: "8px",
+                color: "#fbbf24",
+                fontFamily: "Alfa Slab One, serif",
+                fontSize: "14px",
+                padding: "6px 24px",
+                outline: "none",
+              }}
+            >
+              2023-2024
+              </div>
+            ) : (
             <select
               value={season}
               onChange={(e) => setSeason(Number(e.target.value))}
@@ -167,14 +183,16 @@ function App() {
                 </option>
               ))}
             </select>
-          </div>
+          )}
+        
           {/*LEGENDA PARA TEMPORADA BASQUETE*/}
           {sport === "basketball" && (
             <span className="text-muted text-xs tracking-wider">
               Temporada Regular · Out-Abr
             </span>
           )}
-        </div>
+          {/*FECHA FLEX FLEX-COL*/}
+          </div> 
         {sport === "football" ? (
           <>
             <ResumoLiga season={season} />
@@ -188,11 +206,14 @@ function App() {
           </>
         ) : (
           <>
-            <TabelaClassificacao season={season} sport={sport} />
             <GraficoRadarNBA times={nba.times} season={basketballSeason} />
+            <TabelaClassificacao season={season} sport={sport} />
           </>
         )}
-      </div>
+
+        {/*FECHA FLEX FLEX-COL*/}
+        </div>
+      {/*FECHA MIN-H-SCREEN*/}
     </div>
   );
 }
